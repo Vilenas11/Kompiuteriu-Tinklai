@@ -1,2 +1,0 @@
-g++ echoServer.cpp -o server.exe -lws2_32
-g++ echoClient.cpp -o client.exe -lws2_32

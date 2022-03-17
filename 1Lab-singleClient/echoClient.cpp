@@ -1,10 +1,4 @@
-/*
- * Echo klientas
- * 
- * Author: K�stutis Mizara
- * Description: I�siun�ia serveriui prane�im� ir j� gauna
- */
-
+#include "mainHeader.h"
 #ifdef _WIN32
 #include <winsock2.h>
 #else
@@ -76,6 +70,7 @@ int main(int argc, char *argv[]){
     return 0;
 }
 void funkcija(int sSocket, char buffer[]){
+        
     for(;;){
         printf("Enter the message: ");
         fgets(buffer, BUFFLEN, stdin);

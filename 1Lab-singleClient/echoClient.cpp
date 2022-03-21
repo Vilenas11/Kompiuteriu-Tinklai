@@ -11,8 +11,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <vector>
+#include <iostream>
 
 #define BUFFLEN 1024
+
 void funkcija(int sSocket, char buffer[]);
 int main(int argc, char *argv[]){
 #ifdef _WIN32

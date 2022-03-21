@@ -16,7 +16,7 @@
 
 #define BUFFLEN 1024
 
-void funkcija(int sSocket, char buffer[]);
+void funkcija(int sSocket);
 int main(int argc, char *argv[]){
 #ifdef _WIN32
     WSADATA data;
@@ -67,15 +67,37 @@ int main(int argc, char *argv[]){
         exit(1);
     }
 
-    funkcija(s_socket, buffer);
+    funkcija(s_socket);
 
     close(s_socket);
     return 0;
 }
-void funkcija(int sSocket, char buffer[]){
-        
+void funkcija(int sSocket){
+char buffer[1024];
+int k;
     for(;;){
-        printf("Enter the message: ");
+        printf("Enter the message: \n");
+        std::cout<<"LOL2000"<<std::endl;
+        memset(&buffer,0,BUFFLEN);
+        std::cout<<"BUFFER LENGTH1: "<<strlen(buffer)<<std::endl;
+        k = recv(sSocket,buffer,BUFFLEN,0);
+        std::cout<<"BUFFER LENGTH2: "<<strlen(buffer)<<std::endl;
+        printf("%s\n\n", buffer);
+        std::cout<<"BUFFER LENGTH3: "<<strlen(buffer)<<std::endl;
+        std::cout<<"LOL1"<<std::endl;
+        memset(&buffer,0,BUFFLEN);
+        k = recv(sSocket,buffer,BUFFLEN,0);
+        printf("A: %s\n\n", buffer);
+        std::cout<<"LOL2"<<std::endl;
+        memset(&buffer,0,BUFFLEN);
+        k = recv(sSocket,buffer,BUFFLEN,0);
+        printf("B: %s\n\n", buffer);
+        std::cout<<"LOL3"<<std::endl;
+        memset(&buffer,0,BUFFLEN);
+        k = recv(sSocket,buffer,BUFFLEN,0);
+        printf("C: %s\n\n", buffer);
+        std::cout<<"LOL4"<<std::endl;
+
         fgets(buffer, BUFFLEN, stdin);
         send(sSocket,buffer,strlen(buffer),0);
     }

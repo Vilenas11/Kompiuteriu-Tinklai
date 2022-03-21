@@ -14,6 +14,8 @@
 #include <unistd.h>
 #include <iostream>
 #include <fstream>
+#include <stdlib.h>
+#include<time.h>
 #include <vector>
 class Question{
 private:
@@ -36,7 +38,7 @@ public:
             }
         }
     }
-    void set_questionAnswersVector(vector<std::string> lol){
+    void set_questionAnswersVector(std::vector<std::string> lol){
         questionAnswers = lol;
         checkForCorrectAnswer();
 
@@ -76,7 +78,14 @@ public:
     int get_correctAnswer(){
         return correctAnswer;
     }
-
+    //get_testQuestion
+        Question& operator=(Question other)
+    {
+        testQuestion = other.get_testQuestion();
+        questionAnswers = other.get_questionAnswers();
+        correctAnswer = other.get_correctAnswer();
+        return *this;
+    }
 };
 
 class Quiz{
@@ -86,7 +95,7 @@ public:
     void set_TestQuestions(){
         Question tempObject;
         int i = 0, j=0;
-        vector<std::string> tempVector;
+        std::vector<std::string> tempVector;
         tempVector = tempObject.get_questionAnswers();
         std::ifstream file("Questions.txt");
         std::string str;
@@ -118,16 +127,32 @@ public:
     }
     void coutEverything(){
         for(int i=0; i<questions.size(); i++){
-            cout<<questions[i].get_testQuestion()<<endl;
+            std::cout<<questions[i].get_testQuestion()<<std::endl;
              std::vector<std::string> temporary = questions[i].get_questionAnswers();
             for(int j =0; j<3; j++){
-                cout<<temporary[j]<<endl;
+                std::cout<<temporary[j]<<std::endl;
 
             }
-            cout<<"CORRECT ANSWER: "<<questions[i].get_correctAnswer()<<endl;
+            std::cout<<"CORRECT ANSWER: "<<questions[i].get_correctAnswer()<<std::endl;
         }
     }
-
+    int randomNumberGenerator(){
+        srand(time(0));
+        int random_integer = rand()%questions.size();
+        return random_integer;
+    }
+    /*Question pickARandomQuestion(){
+        int number = randomNumberGenerator();
+        return questions[number];
+    }*/
+    Question coutARandomQuestion(){
+        int number = randomNumberGenerator();
+        /*std::cout<<questions[number].get_testQuestion()<<std::endl;
+        for(int i=0; i<questions[number].get_questionAnswers().size(); i++){
+            std::cout<<questions[number].get_questionAnswers()[i]<<std::endl;
+        }*/
+        return questions[number];
+    }
 
 };
 void funkcija(int clientSocket);
@@ -198,8 +223,34 @@ int main(int argc, char *argv []){
 }
 void funkcija(int clientSocket){
     char buffer[1024];
+    Quiz a;
+    Question temporaryObject;
+    std::string temporaryString;
+    a.set_TestQuestions();
+    //a.coutEverything();
+    //a.coutARandomQuestion();
+
     for(;;){
-      int k;
+      int k, r;
+       // printf("LOL");
+        memset(&buffer,0,sizeof(buffer));
+
+        temporaryObject = a.coutARandomQuestion();
+        temporaryString = temporaryObject.get_testQuestion();
+        //std::cout<<temporaryString<<std::endl;
+        strcpy(buffer, temporaryString.c_str());
+        std::cout<<"BUFFER LENGTH2: "<<strlen(buffer)<<std::endl;
+        r = send(clientSocket, buffer , strlen(buffer), 0);
+        //std::cout<<"ilgis: "<<strlen(buffer)<<std::endl;
+        for(int i=0; i<temporaryObject.get_questionAnswers().size(); i++){
+            printf("lol:");
+            memset(&buffer,0,sizeof(buffer));
+            temporaryString = temporaryObject.get_questionAnswers()[i];
+            //std::cout<<temporaryString<<std::endl;
+            strcpy(buffer, temporaryString.c_str());
+            r = send(clientSocket, buffer , strlen(buffer), 0);
+        }
+
         memset(&buffer,0,sizeof(buffer));
         k = recv(clientSocket,buffer,sizeof(buffer),0);
         buffer[strlen(buffer)-1] = '\0';

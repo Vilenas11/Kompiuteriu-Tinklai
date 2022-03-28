@@ -74,31 +74,22 @@ int main(int argc, char *argv[]){
 }
 void funkcija(int sSocket){
 char buffer[1024];
-int k;
-    for(;;){
-        printf("Enter the message: \n");
-        std::cout<<"LOL2000"<<std::endl;
-        memset(&buffer,0,BUFFLEN);
-        std::cout<<"BUFFER LENGTH1: "<<strlen(buffer)<<std::endl;
-        k = recv(sSocket,buffer,BUFFLEN,0);
-        std::cout<<"BUFFER LENGTH2: "<<strlen(buffer)<<std::endl;
-        printf("%s\n\n", buffer);
-        std::cout<<"BUFFER LENGTH3: "<<strlen(buffer)<<std::endl;
-        std::cout<<"LOL1"<<std::endl;
+int k, r;
+    for(int j=0; j<5; j++){
+        //printf("Enter the message: \n");
         memset(&buffer,0,BUFFLEN);
         k = recv(sSocket,buffer,BUFFLEN,0);
-        printf("A: %s\n\n", buffer);
-        std::cout<<"LOL2"<<std::endl;
-        memset(&buffer,0,BUFFLEN);
-        k = recv(sSocket,buffer,BUFFLEN,0);
-        printf("B: %s\n\n", buffer);
-        std::cout<<"LOL3"<<std::endl;
-        memset(&buffer,0,BUFFLEN);
-        k = recv(sSocket,buffer,BUFFLEN,0);
-        printf("C: %s\n\n", buffer);
-        std::cout<<"LOL4"<<std::endl;
+        printf("%s", buffer);
 
+
+
+        memset(&buffer,0,BUFFLEN);
         fgets(buffer, BUFFLEN, stdin);
-        send(sSocket,buffer,strlen(buffer),0);
-    }
+        r = send(sSocket,buffer,strlen(buffer),0);
+
+        memset(&buffer,0,BUFFLEN);
+        k = recv(sSocket,buffer,BUFFLEN,0);
+        printf("\n%s\n", buffer);
+        }
+    
 }
